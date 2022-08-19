@@ -20,13 +20,14 @@ function Admin() {
         </AppBar>
         <Grow in>
           <Container maxWidth="xlg">
-            <Grid container justifyContent="space-between" alignItems="stretch">
-              <Grid item xs={12} sm={2.5}>
+            <Grid container justifyContent="left" gap="20px" alignItems="stretch">
+              <Grid item xs={12} sm={6} md={3.2} lg={"2"}>
                 <AppBar className="create-div" position="static" color="inherit">
                   <Create />
                 </AppBar>
               </Grid>
-              <Grid item xs={12} sm={12} className="grid">
+
+              <Grid item xs={12} sm={12} md={8.5} lg={9.8} className="grid">
                 <AppBar className="create-div" position="static" color="inherit">
                   <Orders />
                 </AppBar>

@@ -11,5 +11,27 @@ h3 {
   margin: 0;
 }
 .show_orders {
-  max-height: 600px;
+  max-height: 800px;
+}
+.adminFilters {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.adimnFilters,
+button {
+  width: 145px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+}
+.adimnFilters,
+button:hover {
+  width: 147px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background-color: rgb(186, 180, 180);
+  color: white;
+  cursor: pointer;
 }

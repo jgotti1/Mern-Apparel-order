@@ -9,6 +9,16 @@ export const getApparel = async (req, res) => {
   }
 };
 
+export const getOne = async (req, res) => {
+  const { id } = req.params;
+
+  const apparel = await ApparelData.findById(id);
+  if (!apparel) {
+    return res.status(404).json({ error: "No Such Apparel" });
+  }
+  res.status(200).json(apparel);
+};
+
 export const createApparel = async (req, res) => {
   const apparel = req.body;
   const newApparel = new ApparelData(apparel);
@@ -28,13 +38,13 @@ export const deleteApparel = async (req, res) => {
     console.log(error);
   }
 };
+
 export const updateApparel = async (req, res) => {
-  const id = req.params.id;
-  console.log(id);
-  try {
-    await ApparelData.findByIdAndUpdate(id).exec();
-    res.send("Record Updated Successfully!");
-  } catch (error) {
-    console.log(`server ${error}`);
+  const { id } = req.params;
+
+  const apparel = await ApparelData.findByIdAndUpdate({ _id: id }, { ...req.body });
+  if (!apparel) {
+    return res.status(404).json({ error: "No Such Apparel" });
   }
+  res.status(200).json(apparel);
 };

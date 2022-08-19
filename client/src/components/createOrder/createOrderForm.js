@@ -32,8 +32,8 @@ function CreateOrderForm() {
         Authorization: `Bearer ${user.token}`,
       },
     });
-    const json = await response.json();
-    console.log(json);
+    // const json = await response.json();
+
     if (response.ok) {
       setApparel({
         name: "",

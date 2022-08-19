@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 export default function ShowOrdersAdmin() {
   const classes = useStyles();
   const [apparelList, setApparelList] = useState([]);
-  const [paid, setPaid] = useState();
 
   const { user } = useAuthContext();
 
@@ -47,53 +46,114 @@ export default function ShowOrdersAdmin() {
   };
 
   // Mark as paid
+
   const handlePaid = async (id) => {
-    const response = await fetch(`${fetchPath}`, {
+    const response = await fetch(fetchPath + id, {
       method: "Get",
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
     });
-    const orders = await response.json();
-    console.log(typeof orders);
-    if (response.ok) {
-      const [results] = orders.filter((apparel) => apparel._id.includes(id));
-      console.log(results);
-      console.log(typeof results);
-      if (results.ispaid === "NO") {
-        setPaid("YES");
-      } else {
-        setPaid("NO");
-      }
-      console.log(paid);
-      const name = results.name;
-      const appareltype = results.appareltype;
-      const size = results.size;
-      const payment = results.payment;
-      const ispaid = paid;
+    const json = await response.json();
+    if (!response.ok) {
+      console.log(json.error);
+    }
+    console.log(json.ispaid);
+
+    if (json.ispaid === "NO") {
+      console.log("NO was not paid change to paid");
+      const name = json.name;
+      const appareltype = json.appareltype;
+      const size = json.size;
+      const payment = json.ispaid;
+      const ispaid = "YES";
       const change = { name, appareltype, size, payment, ispaid };
-
-      console.log(typeof change);
       console.log(change);
-      //patch change in paid status
 
-      const response = await fetch(fetchPath + results._id, {
+      //Patch paid change
+      const res = await fetch(fetchPath + id, {
         method: "PATCH",
-        body: JSON.stringify({ change }),
+        body: JSON.stringify(change),
         headers: {
           "content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
       });
-      const json = await response.json();
-      console.log(json);
+      const results = await res.json();
+      console.log(results);
+
       if (!response.ok) {
-        console.log(`hey ${json.error}`);
+        console.log(json.error);
       }
       if (response.ok) {
-        console.log(change);
+        console.log("change made");
+        window.location.reload(false);
       }
     }
+    if (json.ispaid === "YES") {
+      console.log("YES is paid change to NOT");
+
+      const name = json.name;
+      const appareltype = json.appareltype;
+      const size = json.size;
+      const payment = json.ispaid;
+      const ispaid = "NO";
+      const change = { name, appareltype, size, payment, ispaid };
+      console.log(change);
+
+      //Patch paid change
+      const res = await fetch(fetchPath + id, {
+        method: "PATCH",
+        body: JSON.stringify(change),
+        headers: {
+          "content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const results = await res.json();
+      console.log(results);
+
+      if (!response.ok) {
+        console.log(json.error);
+      }
+      if (response.ok) {
+        console.log("change made");
+        window.location.reload(false);
+      }
+    }
+  };
+
+  //Show NOT Paid
+  const handleNotPaid = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch(fetchPath, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+
+    const json = await response.json();
+    if (response.ok) {
+      const noResults = json.filter((results) => results.ispaid.includes("NO"));
+      setApparelList(noResults);
+    }
+  };
+  //Show Paid
+  const handleYesPaid = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch(fetchPath, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+
+    const json = await response.json();
+    if (response.ok) {
+      const yesResults = json.filter((results) => results.ispaid.includes("YES"));
+      setApparelList(yesResults);
+    }
+  };
+  //Show All
+  const showAll = async (e) => {
+    window.location.reload(false);
   };
 
   //fetch all orders on load
@@ -116,6 +176,17 @@ export default function ShowOrdersAdmin() {
   return (
     <>
       <h2>All Orders</h2>
+      <div className="adminFilters">
+        <button variant="contained" color="primary" onClick={handleNotPaid}>
+          Search NOT Paid 💲
+        </button>
+        <button variant="contained" color="primary" onClick={handleYesPaid}>
+          Search Paid 💲
+        </button>
+        <button variant="contained" color="primary" onClick={showAll}>
+          Show All
+        </button>
+      </div>
       <TableContainer className="show_orders">
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
