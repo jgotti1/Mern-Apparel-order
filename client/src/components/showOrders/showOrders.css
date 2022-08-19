@@ -1,0 +1,15 @@
+.delete_button {
+  color: red;
+}
+.top_row {
+  background: rgb(226, 226, 232);
+  width: 100%;
+}
+h3 {
+  font-style: italic;
+  padding: 0;
+  margin: 0;
+}
+.show_orders {
+  max-height: 600px;
+}

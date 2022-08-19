@@ -1,0 +1,22 @@
+.App {
+  text-align: center;
+}
+
+.heading {
+  color: rgb(47, 47, 47);
+}
+/* auth forms */
+form.signup,
+form.login {
+  max-width: 400px;
+  margin: 240px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+form.create {
+  max-height: 700px;
+}
+.email {
+  padding-top: 20px;
+}
